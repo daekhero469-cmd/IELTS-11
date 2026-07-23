@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>개초급 일별 학습 | IELTS 11</title>
     <link rel="stylesheet" href="pages.css?v=galaxy-course-3" />
+    <script src="theme.js?v=theme-1"></script>
   </head>
   <body class="beginner-space-theme">
     <header class="nav">
@@ -86,9 +87,7 @@
         <p class="lesson-rule">제목을 예상한 뒤 지문을 읽고, 중심 내용과 근거 두 가지를 표시합니다.</p>
         <div class="reading-passage">
           <span>SHORT PASSAGE</span>
-          <p id="readingPassage"></p>
-          <p class="korean-pronunciation" id="readingPronunciation"></p>
-          <p class="complete-translation" id="readingTranslation"></p>
+          <div class="sentence-study-list" id="readingSentenceList"></div>
         </div>
         <details class="answer-details">
           <summary>읽기 과제 확인</summary>
@@ -104,9 +103,7 @@
         <p class="writing-prompt" id="writingPrompt"></p>
         <div class="sample-answer writing-model">
           <span>5문장 모델 답안</span>
-          <p id="writingModel"></p>
-          <p class="korean-pronunciation" id="writingModelPronunciation"></p>
-          <p class="complete-translation" id="writingModelTranslation"></p>
+          <div class="sentence-study-list" id="writingSentenceList"></div>
         </div>
         <label class="course-writing-field" for="writingPractice">
           <span>모델을 참고해 자신의 내용으로 영어 5문장을 작성하세요.</span>
@@ -122,15 +119,11 @@
           <label class="task-check"><input type="checkbox" data-task="speaking" /><span>완료</span></label>
         </div>
         <div class="question-with-pronunciation">
-          <p class="practice-question" id="speakingQuestion"></p>
-          <p class="korean-pronunciation" id="speakingQuestionPronunciation"></p>
-          <p class="complete-translation" id="speakingQuestionTranslation"></p>
+          <div class="sentence-study-list question-list" id="speakingQuestionList"></div>
         </div>
         <div class="sample-answer">
           <span>3문장 답변 예시</span>
-          <p id="speakingAnswer"></p>
-          <p class="korean-pronunciation" id="speakingAnswerPronunciation"></p>
-          <p class="complete-translation" id="speakingAnswerTranslation"></p>
+          <div class="sentence-study-list" id="speakingAnswerList"></div>
         </div>
         <p class="lesson-rule">직접 답하기 → 이유 말하기 → 구체적인 예시 붙이기 순서로 세 번 말합니다.</p>
       </section>
@@ -141,16 +134,12 @@
           <label class="task-check"><input type="checkbox" data-task="interview" /><span>완료</span></label>
         </div>
         <div class="question-with-pronunciation">
-          <p class="practice-question" id="interviewQuestion"></p>
-          <p class="korean-pronunciation" id="interviewQuestionPronunciation"></p>
-          <p class="complete-translation" id="interviewQuestionTranslation"></p>
+          <div class="sentence-study-list question-list" id="interviewQuestionList"></div>
         </div>
         <button class="lesson-action-btn secondary" type="button" id="toggleInterview">답변 예시 보기</button>
         <div class="sample-answer interview-answer" id="interviewAnswerBox" hidden>
           <span>요약 답변 예시</span>
-          <p id="interviewAnswer"></p>
-          <p class="korean-pronunciation" id="interviewAnswerPronunciation"></p>
-          <p class="complete-translation" id="interviewAnswerTranslation"></p>
+          <div class="sentence-study-list" id="interviewAnswerList"></div>
         </div>
       </section>
 
@@ -208,6 +197,39 @@
           document.getElementById(id).textContent = value || "";
         }
 
+        function splitSentences(text) {
+          return (String(text || "").match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [])
+            .map(function (sentence) { return sentence.trim(); })
+            .filter(Boolean);
+        }
+
+        function appendLabeledText(element, label, value) {
+          const labelElement = document.createElement("b");
+          labelElement.textContent = label;
+          element.append(labelElement, document.createTextNode(" " + (value || "")));
+        }
+
+        function renderSentenceStudyList(id, englishText, pronunciationText, meaningText) {
+          const container = document.getElementById(id);
+          const englishSentences = splitSentences(englishText);
+          const pronunciationSentences = splitSentences(pronunciationText);
+          const meaningSentences = splitSentences(meaningText);
+
+          englishSentences.forEach(function (englishSentence, sentenceIndex) {
+            const row = document.createElement("article");
+            const english = document.createElement("strong");
+            const sound = document.createElement("p");
+            const meaning = document.createElement("p");
+            english.textContent = englishSentence;
+            sound.className = "korean-pronunciation";
+            meaning.className = "complete-translation";
+            appendLabeledText(sound, "발음:", pronunciationSentences[sentenceIndex]);
+            appendLabeledText(meaning, "뜻:", meaningSentences[sentenceIndex]);
+            row.append(english, sound, meaning);
+            container.appendChild(row);
+          });
+        }
+
         try {
           taskState = JSON.parse(safeRead(taskKey, "{}")) || {};
         } catch (error) {
@@ -220,26 +242,39 @@
         setText("dayGoal", item.goal);
         setText("examFocus", item.examFocus);
         setText("vocabularyTitle", "오늘의 단어 " + item.vocabulary.length + "개");
-        setText("readingPassage", item.reading.en);
-        setText("readingPronunciation", pronunciation.reading);
-        setText("readingTranslation", item.reading.ko);
         setText("readingQuestion", item.reading.question);
         setText("writingPrompt", item.writing.prompt);
-        setText("writingModel", item.writing.modelEn);
-        setText("writingModelPronunciation", pronunciation.writingModel);
-        setText("writingModelTranslation", item.writing.modelKo);
-        setText("speakingQuestion", item.speaking.question);
-        setText("speakingQuestionPronunciation", pronunciation.speakingQuestion);
-        setText("speakingQuestionTranslation", item.speaking.questionKo);
-        setText("speakingAnswer", item.speaking.answer);
-        setText("speakingAnswerPronunciation", pronunciation.speakingAnswer);
-        setText("speakingAnswerTranslation", item.speaking.answerKo);
-        setText("interviewQuestion", item.interview.question);
-        setText("interviewQuestionPronunciation", pronunciation.interviewQuestion);
-        setText("interviewQuestionTranslation", item.interview.questionKo);
-        setText("interviewAnswer", item.interview.answer);
-        setText("interviewAnswerPronunciation", pronunciation.interviewAnswer);
-        setText("interviewAnswerTranslation", item.interview.answerKo);
+        renderSentenceStudyList("readingSentenceList", item.reading.en, pronunciation.reading, item.reading.ko);
+        renderSentenceStudyList(
+          "writingSentenceList",
+          item.writing.modelEn,
+          pronunciation.writingModel,
+          item.writing.modelKo,
+        );
+        renderSentenceStudyList(
+          "speakingQuestionList",
+          item.speaking.question,
+          pronunciation.speakingQuestion,
+          item.speaking.questionKo,
+        );
+        renderSentenceStudyList(
+          "speakingAnswerList",
+          item.speaking.answer,
+          pronunciation.speakingAnswer,
+          item.speaking.answerKo,
+        );
+        renderSentenceStudyList(
+          "interviewQuestionList",
+          item.interview.question,
+          pronunciation.interviewQuestion,
+          item.interview.questionKo,
+        );
+        renderSentenceStudyList(
+          "interviewAnswerList",
+          item.interview.answer,
+          pronunciation.interviewAnswer,
+          item.interview.answerKo,
+        );
 
         if (dayNumber > 1) {
           setText(
@@ -274,9 +309,13 @@
           number.textContent = String(lineIndex + 1).padStart(2, "0");
           english.textContent = line.en;
           sound.className = "korean-pronunciation";
-          sound.textContent = pronunciation.listening ? pronunciation.listening[lineIndex] : "";
           meaning.className = "complete-translation";
-          meaning.textContent = line.ko;
+          appendLabeledText(
+            sound,
+            "발음:",
+            pronunciation.listening ? pronunciation.listening[lineIndex] : "",
+          );
+          appendLabeledText(meaning, "뜻:", line.ko);
           article.append(number, english, sound, meaning);
           listeningLines.appendChild(article);
         });

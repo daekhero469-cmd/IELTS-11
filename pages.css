@@ -1346,6 +1346,54 @@ h1 {
   line-height: 1.65 !important;
 }
 
+.sentence-study-list {
+  display: grid;
+  margin-top: 12px;
+}
+
+.sentence-study-list article {
+  min-width: 0;
+  border-bottom: 1px solid rgba(173, 196, 255, 0.16);
+  padding: 18px 0;
+}
+
+.sentence-study-list article:first-child {
+  padding-top: 8px;
+}
+
+.sentence-study-list article:last-child {
+  border-bottom: 0;
+  padding-bottom: 4px;
+}
+
+.sentence-study-list strong {
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-size: clamp(19px, 2.5vw, 24px);
+  line-height: 1.5;
+}
+
+.sentence-study-list p {
+  margin: 7px 0 0;
+}
+
+.sentence-study-list p b,
+.listening-line-list p b {
+  color: #58d7ef;
+  font-size: 13px;
+}
+
+.sentence-study-list.question-list {
+  margin-top: 0;
+  border-left: 4px solid #45c9e8;
+  padding-left: 18px;
+}
+
+.sentence-study-list.question-list strong {
+  font-size: clamp(22px, 3.5vw, 30px);
+}
+
 .listening-line-list {
   display: grid;
   gap: 10px;
