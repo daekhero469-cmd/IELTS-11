@@ -893,6 +893,11 @@ h1 {
   padding: 16px;
 }
 
+.beginner1-allocation,
+.beginner1-time-plan {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+
 .vocabulary-grid > div > div {
   display: grid;
   min-width: 0;
@@ -954,6 +959,77 @@ h1 {
   margin: 8px 0 0;
   color: var(--muted);
   font-weight: 750;
+}
+
+.phonics-rule {
+  margin: 0 0 16px;
+  border-left: 4px solid #45c9e8;
+  padding: 13px 15px;
+  color: var(--ink);
+  background: #edfafd;
+  font-weight: 800;
+  line-height: 1.65;
+}
+
+.phonics-example-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.phonics-example-grid article {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 15px;
+  background: #ffffff;
+}
+
+.phonics-example-grid strong {
+  display: block;
+  overflow-wrap: anywhere;
+  color: #101828;
+  font-size: 19px;
+}
+
+.phonics-example-grid p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.phonics-example-grid .korean-pronunciation {
+  color: #d75537;
+  font-weight: 850;
+}
+
+.beginner-space-theme .phonics-rule {
+  color: #d9f7ff;
+  background: #101b25;
+}
+
+.beginner-space-theme .phonics-example-grid article {
+  border-color: rgba(173, 196, 255, 0.22);
+  background: #090b12;
+}
+
+.beginner-space-theme .phonics-example-grid strong {
+  color: #ffffff;
+}
+
+html[data-theme="light"] .beginner-space-theme .phonics-rule {
+  color: #15202b;
+  background: #edfafd;
+}
+
+html[data-theme="light"] .beginner-space-theme .phonics-example-grid article {
+  border-color: #dce3ef;
+  background: #ffffff;
+}
+
+html[data-theme="light"] .beginner-space-theme .phonics-example-grid strong {
+  color: #101828;
 }
 
 .korean-pronunciation {
@@ -1675,6 +1751,10 @@ html[data-theme="light"] .webtoon-slot-heading strong {
     grid-template-columns: 1fr;
   }
 
+  .phonics-example-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .practice-sentence,
   .day-completion {
     align-items: stretch;
@@ -1696,6 +1776,10 @@ html[data-theme="light"] .webtoon-slot-heading strong {
 }
 
 @media (max-width: 480px) {
+  .phonics-example-grid {
+    grid-template-columns: 1fr;
+  }
+
   .day-icon {
     min-height: 154px;
     grid-template-columns: 34px minmax(0, 1fr);

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1 개초급 일별 학습 | IELTS 11</title>
-    <link rel="stylesheet" href="pages.css?v=beginner-split-1" />
+    <link rel="stylesheet" href="pages.css?v=phonics-1" />
     <script src="theme.js?v=theme-1"></script>
   </head>
   <body class="beginner-space-theme">
@@ -42,7 +42,7 @@
         </div>
         <div class="day-status-ring" aria-label="오늘 학습 진행률">
           <strong id="dayPercent">0%</strong>
-          <span id="dayTaskCount">0 / 7</span>
+          <span id="dayTaskCount">0 / 8</span>
         </div>
       </section>
 
@@ -52,19 +52,20 @@
         <p>짧고 정확한 답을 먼저 만든 뒤, 이유나 세부 정보를 한 문장 더 붙입니다.</p>
       </section>
 
-      <section class="day-time-plan" aria-label="오늘 시간표">
-        <span><b>8분</b> 복습</span>
+      <section class="day-time-plan beginner1-time-plan" aria-label="오늘 시간표">
+        <span><b>5분</b> 복습</span>
         <span><b>8분</b> 단어</span>
-        <span><b>10분</b> Listening</span>
-        <span><b>8분</b> Reading</span>
-        <span><b>12분</b> 문장 만들기</span>
-        <span><b>8분</b> Speaking</span>
-        <span><b>6분</b> 인터뷰</span>
+        <span><b>10분</b> 실제 발음</span>
+        <span><b>8분</b> Listening</span>
+        <span><b>7분</b> Reading</span>
+        <span><b>10분</b> 문장 만들기</span>
+        <span><b>7분</b> Speaking</span>
+        <span><b>5분</b> 인터뷰</span>
       </section>
 
       <section class="lesson-block" id="reviewBlock">
         <div class="lesson-heading">
-          <div><span>01 · 8분</span><h2>전날 복습</h2></div>
+          <div><span>01 · 5분</span><h2>전날 복습</h2></div>
           <label class="task-check"><input type="checkbox" data-task="review" /><span>완료</span></label>
         </div>
         <p id="reviewText">전날 핵심 문장 3개를 소리 내어 읽습니다. 첫날에는 자기소개 문장을 천천히 세 번 읽습니다.</p>
@@ -78,9 +79,22 @@
         <div class="vocabulary-grid" id="vocabularyGrid"></div>
       </section>
 
+      <section class="lesson-block phonics-block">
+        <div class="lesson-heading">
+          <div><span>03 · 10분</span><h2 id="phonicsTitle">알파벳 실제 발음</h2></div>
+          <label class="task-check"><input type="checkbox" data-task="phonics" /><span>완료</span></label>
+        </div>
+        <p class="phonics-rule" id="phonicsRule"></p>
+        <div class="phonics-example-grid" id="phonicsExamples"></div>
+        <audio class="lesson-audio-player" id="phonicsAudio" controls playsinline preload="metadata">
+          이 브라우저에서는 오디오 재생을 지원하지 않습니다.
+        </audio>
+        <p class="lesson-feedback" id="phonicsStatus" aria-live="polite"></p>
+      </section>
+
       <section class="lesson-block listening-block">
         <div class="lesson-heading">
-          <div><span>03 · 10분</span><h2>IELTS Listening</h2></div>
+          <div><span>04 · 8분</span><h2>IELTS Listening</h2></div>
           <label class="task-check"><input type="checkbox" data-task="listening" /><span>완료</span></label>
         </div>
         <p class="lesson-rule">1회 전체 듣기 · 2회 핵심어 받아쓰기 · 3회 따라 말하기</p>
@@ -99,7 +113,7 @@
 
       <section class="lesson-block">
         <div class="lesson-heading">
-          <div><span>04 · 8분</span><h2>General Reading</h2></div>
+          <div><span>05 · 7분</span><h2>General Reading</h2></div>
           <label class="task-check"><input type="checkbox" data-task="reading" /><span>완료</span></label>
         </div>
         <p class="lesson-rule">문장을 한 번 읽고 사람·장소·숫자·행동 중 핵심 정보를 찾습니다.</p>
@@ -116,7 +130,7 @@
 
       <section class="lesson-block">
         <div class="lesson-heading">
-          <div><span>05 · 12분</span><h2>문장 만들기</h2></div>
+          <div><span>06 · 10분</span><h2>문장 만들기</h2></div>
           <label class="task-check"><input type="checkbox" data-task="writing" /><span>완료</span></label>
         </div>
         <div class="sentence-pattern">
@@ -134,7 +148,7 @@
 
       <section class="lesson-block speaking-block">
         <div class="lesson-heading">
-          <div><span>06 · 8분</span><h2>IELTS Speaking</h2></div>
+          <div><span>07 · 7분</span><h2>IELTS Speaking</h2></div>
           <label class="task-check"><input type="checkbox" data-task="speaking" /><span>완료</span></label>
         </div>
         <div class="question-with-pronunciation">
@@ -151,7 +165,7 @@
 
       <section class="lesson-block interview-block">
         <div class="lesson-heading">
-          <div><span>07 · 6분</span><h2>호주 취업 인터뷰</h2></div>
+          <div><span>08 · 5분</span><h2>호주 취업 인터뷰</h2></div>
           <label class="task-check"><input type="checkbox" data-task="interview" /><span>완료</span></label>
         </div>
         <div class="question-with-pronunciation">
@@ -169,7 +183,7 @@
       <section class="day-completion">
         <div>
           <span>오늘 학습</span>
-          <strong id="completionText">7개 항목을 완료해 주세요.</strong>
+          <strong id="completionText">8개 항목을 완료해 주세요.</strong>
         </div>
         <button type="button" id="completeDay" disabled>오늘 학습 완료</button>
       </section>
@@ -181,7 +195,7 @@
       </nav>
     </main>
 
-    <script src="beginner-1-course.js?v=beginner-split-1"></script>
+    <script src="beginner-1-course.js?v=phonics-1"></script>
     <script src="beginner-1-pronunciation.js?v=beginner-split-1"></script>
     <script>
       (function () {
@@ -194,7 +208,7 @@
         const pronunciation = pronunciationDays[dayNumber - 1];
         if (!item) return;
 
-        const taskNames = ["review", "vocabulary", "listening", "reading", "writing", "speaking", "interview"];
+        const taskNames = ["review", "vocabulary", "phonics", "listening", "reading", "writing", "speaking", "interview"];
         const taskKey = "ielts11-beginner1-tasks-" + dayNumber;
         const writingKey = "ielts11-beginner1-writing-" + dayNumber;
         let taskState = {};
@@ -233,6 +247,8 @@
         document.getElementById("sentencePattern").textContent = item.pattern;
         document.getElementById("vocabularyTitle").textContent =
           "오늘의 단어 " + item.vocabulary.length + "개";
+        document.getElementById("phonicsTitle").textContent = item.phonics.title;
+        document.getElementById("phonicsRule").textContent = item.phonics.rule;
         document.getElementById("speakingQuestion").textContent = item.speaking.question;
         document.getElementById("speakingAnswer").textContent = item.speaking.answer;
         document.getElementById("interviewQuestion").textContent = item.interview.question;
@@ -275,6 +291,20 @@
           vocabGrid.appendChild(div);
         });
 
+        const phonicsExamples = document.getElementById("phonicsExamples");
+        item.phonics.examples.forEach(function (example) {
+          const article = document.createElement("article");
+          const word = document.createElement("strong");
+          const sound = document.createElement("p");
+          const meaning = document.createElement("p");
+          word.textContent = example.word;
+          sound.className = "korean-pronunciation";
+          sound.textContent = "발음: " + example.pronunciation;
+          meaning.textContent = "뜻: " + example.meaning;
+          article.append(word, sound, meaning);
+          phonicsExamples.appendChild(article);
+        });
+
         const writingEl = document.getElementById("writingPractice");
         writingEl.value = safeRead(writingKey, "");
 
@@ -284,7 +314,7 @@
           }).length;
           const percent = Math.round((completedCount / taskNames.length) * 100);
           document.getElementById("dayPercent").textContent = percent + "%";
-          document.getElementById("dayTaskCount").textContent = completedCount + " / 7";
+          document.getElementById("dayTaskCount").textContent = completedCount + " / 8";
           document.querySelector(".day-status-ring").style.setProperty("--progress", percent * 3.6 + "deg");
           const completeBtn = document.getElementById("completeDay");
           completeBtn.disabled = completedCount !== taskNames.length;
@@ -326,6 +356,20 @@
         });
         audio.addEventListener("error", function () {
           audioStatus.textContent = "오디오를 불러오지 못했습니다. 페이지를 새로고침해 주세요.";
+        });
+
+        const phonicsAudio = document.getElementById("phonicsAudio");
+        const phonicsStatus = document.getElementById("phonicsStatus");
+        phonicsAudio.src =
+          "audio/beginner-1/day-" + String(dayNumber).padStart(2, "0") + "-phonics.mp3?v=2";
+        phonicsAudio.addEventListener("play", function () {
+          phonicsStatus.textContent = "예시 단어를 순서대로 재생하고 있습니다.";
+        });
+        phonicsAudio.addEventListener("ended", function () {
+          phonicsStatus.textContent = "철자, 발음, 뜻을 보며 한 번 더 따라 읽어 보세요.";
+        });
+        phonicsAudio.addEventListener("error", function () {
+          phonicsStatus.textContent = "발음 음원을 불러오지 못했습니다. 페이지를 새로고침해 주세요.";
         });
 
         document.getElementById("completeDay").addEventListener("click", function () {
