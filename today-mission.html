@@ -268,7 +268,16 @@
 
       playBtn.addEventListener("click", playCurrentSentence);
 
-      startBtn.addEventListener("click", () => {
+      async function ensureMicrophonePermission() {
+        if (!navigator.mediaDevices?.getUserMedia) {
+          return true;
+        }
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach((track) => track.stop());
+        return true;
+      }
+
+      startBtn.addEventListener("click", async () => {
         const count = getSpeakingCount();
         if (count >= 3 || !SpeechRecognition) {
           renderSpeakingMission();
@@ -277,8 +286,27 @@
 
         const currentIndex = getSpeakingIndex();
         const current = missions[currentIndex];
+        window.speechSynthesis.cancel();
+        if (recognition) {
+          try {
+            recognition.abort();
+          } catch {
+            // Ignore abort errors from inactive recognition sessions.
+          }
+        }
+
+        try {
+          speechMessageEl.textContent = "마이크 권한을 확인하고 있습니다.";
+          await ensureMicrophonePermission();
+        } catch {
+          speechMessageEl.textContent = "마이크 권한이 필요합니다. 브라우저 주소창의 마이크 권한을 허용하세요.";
+          startBtn.disabled = false;
+          return;
+        }
+
         recognition = new SpeechRecognition();
         recognition.lang = "en-US";
+        recognition.continuous = false;
         recognition.interimResults = false;
         recognition.maxAlternatives = 1;
         startBtn.disabled = true;
@@ -302,8 +330,13 @@
           startBtn.disabled = false;
         };
 
-        recognition.onerror = () => {
-          speechMessageEl.textContent = "음성 인식에 실패했습니다. 마이크 권한과 브라우저를 확인하세요.";
+        recognition.onerror = (event) => {
+          const reason = event.error === "not-allowed"
+            ? "마이크 권한이 차단되었습니다. 브라우저 설정에서 마이크를 허용하세요."
+            : event.error === "no-speech"
+              ? "음성이 감지되지 않았습니다. 스타트를 누른 뒤 바로 문장을 읽어주세요."
+              : "음성 인식에 실패했습니다. Chrome에서 HTTPS 공개 주소로 다시 시도하세요.";
+          speechMessageEl.textContent = reason;
           startBtn.disabled = false;
         };
 
@@ -313,7 +346,12 @@
           }
         };
 
-        recognition.start();
+        try {
+          recognition.start();
+        } catch {
+          speechMessageEl.textContent = "음성인식을 시작하지 못했습니다. 페이지를 새로고침한 뒤 다시 시도하세요.";
+          startBtn.disabled = false;
+        }
       });
 
       resetSpeakingBtn.addEventListener("click", () => {
