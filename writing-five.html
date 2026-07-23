@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Writing 문장 5개 | IELTS 11</title>
+    <link rel="stylesheet" href="pages.css?v=mission-1" />
+  </head>
+  <body>
+    <header class="nav">
+      <a class="brand" href="index.html"><span class="brand-mark">I</span>IELTS 11</a>
+      <nav class="nav-actions">
+        <a class="category-link" href="today-mission.html">✓ 오늘 미션</a>
+        <a class="category-link" href="beginner.html">1 개초급</a>
+        <a class="category-link" href="intermediate.html">2 어나더 중급</a>
+        <a class="category-link" href="advanced-2xl.html">XL 2XL상급</a>
+        <a class="login-link" href="login.html">로그인</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="page-hero">
+        <p class="eyebrow">Writing Mission</p>
+        <h1>Writing 문장 5개</h1>
+        <p>주어진 한국어 의미를 보고 IELTS Writing에 쓸 수 있는 영어 문장 5개를 작성하세요.</p>
+      </section>
+
+      <section class="writing-board" aria-label="Writing 문장 5개 미션">
+        <div class="writing-row">
+          <label for="w1">1. 많은 학생들은 해외 유학이 시야를 넓힌다고 믿는다.</label>
+          <textarea id="w1" rows="3" placeholder="Many students believe that..."></textarea>
+        </div>
+        <div class="writing-row">
+          <label for="w2">2. 온라인 수업은 시간과 장소의 제약을 줄여준다.</label>
+          <textarea id="w2" rows="3" placeholder="Online classes can reduce..."></textarea>
+        </div>
+        <div class="writing-row">
+          <label for="w3">3. 정부는 대중교통 개선에 더 많은 예산을 써야 한다.</label>
+          <textarea id="w3" rows="3" placeholder="The government should spend..."></textarea>
+        </div>
+        <div class="writing-row">
+          <label for="w4">4. 규칙적인 운동은 정신 건강에도 긍정적인 영향을 준다.</label>
+          <textarea id="w4" rows="3" placeholder="Regular exercise has..."></textarea>
+        </div>
+        <div class="writing-row">
+          <label for="w5">5. 기술 발전은 우리의 의사소통 방식을 크게 바꾸었다.</label>
+          <textarea id="w5" rows="3" placeholder="Technological development has..."></textarea>
+        </div>
+        <button class="mission-submit" type="button" id="saveWriting">작성 내용 저장</button>
+        <p class="writing-message" id="writingMessage"></p>
+      </section>
+    </main>
+
+    <script>
+      const fields = ["w1", "w2", "w3", "w4", "w5"];
+      const saveKey = `ielts11-writing-five-${new Date().toISOString().slice(0, 10)}`;
+      const saved = JSON.parse(localStorage.getItem(saveKey) || "{}");
+
+      fields.forEach((id) => {
+        const field = document.getElementById(id);
+        field.value = saved[id] || "";
+      });
+
+      document.getElementById("saveWriting").addEventListener("click", () => {
+        const next = {};
+        fields.forEach((id) => {
+          next[id] = document.getElementById(id).value.trim();
+        });
+        localStorage.setItem(saveKey, JSON.stringify(next));
+        document.getElementById("writingMessage").textContent = "오늘 작성 내용이 이 브라우저에 저장되었습니다.";
+      });
+    </script>
+  </body>
+</html>

@@ -171,6 +171,173 @@ h1 {
   font-weight: 650;
 }
 
+.typing-mission,
+.writing-board {
+  max-width: 1120px;
+  margin: 0 auto 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: clamp(20px, 4vw, 30px);
+  background: #fff;
+}
+
+.mission-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.mission-status span,
+.sentence-label,
+.typing-field span {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.mission-status strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--brand);
+  font-size: 28px;
+}
+
+.reset-day-btn {
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 12px;
+  background: #fff;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.sentence-box {
+  border-radius: 8px;
+  padding: clamp(20px, 4vw, 28px);
+  background: #eef5ff;
+}
+
+.sentence-box h2 {
+  margin: 8px 0;
+  font-size: clamp(26px, 4vw, 42px);
+  line-height: 1.18;
+}
+
+.sentence-ko {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.typing-field {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.typing-field input,
+.writing-row textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  font: inherit;
+  font-weight: 700;
+  background: #fff;
+}
+
+.typing-field input {
+  min-height: 54px;
+}
+
+.typing-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.mission-submit {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--brand);
+  border-radius: 8px;
+  padding: 0 18px;
+  color: #fff;
+  background: var(--brand);
+  font: inherit;
+  font-weight: 950;
+}
+
+.mission-submit:disabled {
+  border-color: #c8d1de;
+  background: #c8d1de;
+}
+
+.typing-actions p,
+.writing-message {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.mission-shortcuts {
+  margin-top: 18px;
+}
+
+.mission-icon-card {
+  min-height: 210px;
+  border: 1px solid var(--brand);
+  border-radius: 8px;
+  padding: 24px;
+  background: #fff;
+  box-shadow: 0 16px 34px rgba(15, 107, 255, 0.12);
+}
+
+.mission-icon-card b {
+  display: grid;
+  width: 50px;
+  height: 50px;
+  place-items: center;
+  border-radius: 8px;
+  color: #fff;
+  background: var(--brand);
+}
+
+.mission-icon-card h2 {
+  margin: 14px 0 10px;
+  font-size: 24px;
+}
+
+.mission-icon-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+  font-weight: 650;
+}
+
+.writing-board {
+  display: grid;
+  gap: 16px;
+}
+
+.writing-row {
+  display: grid;
+  gap: 8px;
+}
+
+.writing-row label {
+  font-weight: 900;
+  line-height: 1.45;
+}
+
 @media (max-width: 860px) {
   .nav {
     align-items: flex-start;
@@ -197,5 +364,11 @@ h1 {
 
   .mission-grid {
     grid-template-columns: 1fr;
+  }
+
+  .mission-status,
+  .typing-actions {
+    align-items: stretch;
+    flex-direction: column;
   }
 }
