@@ -72,12 +72,15 @@
         </div>
         <p class="lesson-rule">1회 전체 듣기 · 2회 핵심어 받아쓰기 · 3회 따라 말하기</p>
         <div class="practice-sentence">
-          <button class="listen-icon-btn" type="button" id="playListening" aria-label="영어 문장 듣기">▶</button>
           <div>
             <strong id="listeningSentence"></strong>
+            <p class="korean-pronunciation" id="listeningPronunciation"></p>
             <p id="listeningMeaning"></p>
           </div>
         </div>
+        <audio class="lesson-audio-player" id="listeningAudio" controls preload="metadata">
+          이 브라우저에서는 오디오 재생을 지원하지 않습니다.
+        </audio>
         <p class="lesson-feedback" id="listeningStatus" aria-live="polite"></p>
       </section>
 
@@ -90,6 +93,7 @@
         <div class="reading-passage">
           <span>SHORT NOTICE</span>
           <p id="readingPassage"></p>
+          <p class="korean-pronunciation" id="readingPronunciation"></p>
         </div>
         <details class="answer-details">
           <summary>핵심 내용 확인</summary>
@@ -105,6 +109,7 @@
         <div class="sentence-pattern">
           <span>오늘의 문장 틀</span>
           <strong id="sentencePattern"></strong>
+          <p class="korean-pronunciation" id="patternPronunciation"></p>
         </div>
         <label class="course-writing-field" for="writingPractice">
           <span>문장 틀을 사용해 영어 문장 3개를 작성합니다.</span>
@@ -119,10 +124,14 @@
           <div><span>06 · 8분</span><h2>IELTS Speaking</h2></div>
           <label class="task-check"><input type="checkbox" data-task="speaking" /><span>완료</span></label>
         </div>
-        <p class="practice-question" id="speakingQuestion"></p>
+        <div class="question-with-pronunciation">
+          <p class="practice-question" id="speakingQuestion"></p>
+          <p class="korean-pronunciation" id="speakingQuestionPronunciation"></p>
+        </div>
         <div class="sample-answer">
           <span>초보자 답변 예시</span>
           <p id="speakingAnswer"></p>
+          <p class="korean-pronunciation" id="speakingAnswerPronunciation"></p>
         </div>
         <p class="lesson-rule">직접 답하기 → 이유 말하기 → 짧은 예시 붙이기 순서로 세 번 말합니다.</p>
       </section>
@@ -132,11 +141,15 @@
           <div><span>07 · 6분</span><h2>호주 취업 인터뷰</h2></div>
           <label class="task-check"><input type="checkbox" data-task="interview" /><span>완료</span></label>
         </div>
-        <p class="practice-question" id="interviewQuestion"></p>
+        <div class="question-with-pronunciation">
+          <p class="practice-question" id="interviewQuestion"></p>
+          <p class="korean-pronunciation" id="interviewQuestionPronunciation"></p>
+        </div>
         <button class="lesson-action-btn secondary" type="button" id="toggleInterview">답변 예시 보기</button>
         <div class="sample-answer interview-answer" id="interviewAnswerBox" hidden>
           <span>면접 답변 예시</span>
           <p id="interviewAnswer"></p>
+          <p class="korean-pronunciation" id="interviewAnswerPronunciation"></p>
         </div>
       </section>
 
@@ -156,6 +169,7 @@
     </main>
 
     <script src="beginner-course.js?v=beginner-60-1"></script>
+    <script src="beginner-pronunciation.js?v=beginner-audio-1"></script>
     <script>
       (function () {
         const params = new URLSearchParams(window.location.search);
@@ -163,6 +177,8 @@
         if (!Number.isFinite(dayNumber) || dayNumber < 1 || dayNumber > 60) dayNumber = 1;
         const days = window.IELTS11_BEGINNER_DAYS || [];
         const item = days[dayNumber - 1];
+        const pronunciationDays = window.IELTS11_BEGINNER_PRONUNCIATIONS || [];
+        const pronunciation = pronunciationDays[dayNumber - 1];
         if (!item) return;
 
         const taskNames = ["review", "vocabulary", "listening", "reading", "writing", "speaking", "interview"];
@@ -212,15 +228,36 @@
         document.getElementById("readingAnswer").textContent =
           item.listening.ko + " 핵심 행동이나 정보를 영어 한 단어로 표시해 보세요.";
 
+        if (pronunciation) {
+          document.getElementById("listeningPronunciation").textContent = pronunciation.listening;
+          document.getElementById("readingPronunciation").textContent =
+            pronunciation.listening + " " + pronunciation.speakingAnswer;
+          document.getElementById("patternPronunciation").textContent = pronunciation.pattern;
+          document.getElementById("speakingQuestionPronunciation").textContent =
+            pronunciation.speakingQuestion;
+          document.getElementById("speakingAnswerPronunciation").textContent =
+            pronunciation.speakingAnswer;
+          document.getElementById("interviewQuestionPronunciation").textContent =
+            pronunciation.interviewQuestion;
+          document.getElementById("interviewAnswerPronunciation").textContent =
+            pronunciation.interviewAnswer;
+        }
+
         if (dayNumber > 1) {
           document.getElementById("reviewText").textContent =
             "DAY " + (dayNumber - 1) + "의 단어 6개와 핵심 문장 3개를 소리 내어 다시 읽습니다.";
         }
 
         const vocabGrid = document.getElementById("vocabularyGrid");
-        item.vocabulary.forEach(function (word) {
+        item.vocabulary.forEach(function (word, wordIndex) {
           const div = document.createElement("div");
-          div.innerHTML = "<strong>" + word.en + "</strong><span>" + word.ko + "</span>";
+          const wordPronunciation =
+            pronunciation && pronunciation.vocabulary[wordIndex]
+              ? pronunciation.vocabulary[wordIndex]
+              : "";
+          div.innerHTML =
+            "<div><strong>" + word.en + '</strong><small class="korean-pronunciation">' +
+            wordPronunciation + "</small></div><span>" + word.ko + "</span>";
           vocabGrid.appendChild(div);
         });
 
@@ -264,23 +301,17 @@
           this.textContent = box.hidden ? "답변 예시 보기" : "답변 예시 닫기";
         });
 
-        document.getElementById("playListening").addEventListener("click", function () {
-          const status = document.getElementById("listeningStatus");
-          if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
-            status.textContent = "이 브라우저에서는 문장 듣기를 지원하지 않습니다.";
-            return;
-          }
-          window.speechSynthesis.cancel();
-          const utterance = new SpeechSynthesisUtterance(item.listening.en);
-          utterance.lang = "en-AU";
-          utterance.rate = 0.86;
-          utterance.onstart = function () { status.textContent = "문장을 재생하고 있습니다."; };
-          utterance.onend = function () { status.textContent = "다시 듣고 핵심 단어를 따라 말해 보세요."; };
-          utterance.onerror = function () { status.textContent = "재생에 실패했습니다. 미디어 음량을 확인해 주세요."; };
-          window.setTimeout(function () {
-            window.speechSynthesis.resume();
-            window.speechSynthesis.speak(utterance);
-          }, 60);
+        const audio = document.getElementById("listeningAudio");
+        const audioStatus = document.getElementById("listeningStatus");
+        audio.src = "audio/beginner/day-" + String(dayNumber).padStart(2, "0") + "-listening.wav";
+        audio.addEventListener("play", function () {
+          audioStatus.textContent = "문장을 재생하고 있습니다.";
+        });
+        audio.addEventListener("ended", function () {
+          audioStatus.textContent = "다시 듣고 핵심 단어를 따라 말해 보세요.";
+        });
+        audio.addEventListener("error", function () {
+          audioStatus.textContent = "오디오를 불러오지 못했습니다. 페이지를 새로고침해 주세요.";
         });
 
         document.getElementById("completeDay").addEventListener("click", function () {

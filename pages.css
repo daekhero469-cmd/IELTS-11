@@ -886,6 +886,12 @@ h1 {
   padding: 16px;
 }
 
+.vocabulary-grid > div > div {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
 .vocabulary-grid strong {
   overflow-wrap: anywhere;
   font-size: 18px;
@@ -941,6 +947,28 @@ h1 {
   margin: 8px 0 0;
   color: var(--muted);
   font-weight: 750;
+}
+
+.korean-pronunciation {
+  display: block;
+  margin: 6px 0 0;
+  color: #a33b00 !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  line-height: 1.5 !important;
+  overflow-wrap: anywhere;
+}
+
+.vocabulary-grid .korean-pronunciation {
+  margin: 0;
+  font-size: 13px !important;
+}
+
+.lesson-audio-player {
+  display: block;
+  width: 100%;
+  height: 46px;
+  margin-top: 12px;
 }
 
 .lesson-feedback {
@@ -1061,6 +1089,20 @@ h1 {
   font-size: clamp(23px, 4vw, 32px);
   font-weight: 950;
   line-height: 1.35;
+}
+
+.question-with-pronunciation {
+  margin-bottom: 16px;
+}
+
+.question-with-pronunciation .practice-question {
+  margin-bottom: 0;
+}
+
+.sample-answer .korean-pronunciation,
+.reading-passage .korean-pronunciation {
+  margin-top: 7px;
+  font-size: 14px !important;
 }
 
 .interview-answer {
