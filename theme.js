@@ -189,9 +189,28 @@
     nav.insertBefore(button, anchor || null);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", mountThemeToggle, { once: true });
-  } else {
+  function normalizeNavigationLabels() {
+    const labels = {
+      "beginner.html": "튜토리얼",
+      "beginner-2.html": "개초급",
+      "intermediate.html": "어나더 중급",
+      "advanced-2xl.html": "2XL상급",
+    };
+
+    document.querySelectorAll(".nav-actions a[href]").forEach(function (link) {
+      const path = link.getAttribute("href").split("?")[0].split("#")[0];
+      if (labels[path]) link.textContent = labels[path];
+    });
+  }
+
+  function initializeSharedNavigation() {
+    normalizeNavigationLabels();
     mountThemeToggle();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeSharedNavigation, { once: true });
+  } else {
+    initializeSharedNavigation();
   }
 })();
