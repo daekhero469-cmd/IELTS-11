@@ -114,21 +114,32 @@
       ];
 
       function getKoreanDateKey() {
-        return new Intl.DateTimeFormat("en-CA", {
-          timeZone: "Asia/Seoul",
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-        }).format(new Date());
+        try {
+          const parts = new Intl.DateTimeFormat("en-US", {
+            timeZone: "Asia/Seoul",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          }).formatToParts(new Date());
+          const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+          return `${values.year}-${values.month}-${values.day}`;
+        } catch {
+          const koreaTime = new Date(Date.now() + 9 * 60 * 60 * 1000);
+          const year = koreaTime.getUTCFullYear();
+          const month = String(koreaTime.getUTCMonth() + 1).padStart(2, "0");
+          const day = String(koreaTime.getUTCDate()).padStart(2, "0");
+          return `${year}-${month}-${day}`;
+        }
       }
 
       function getDailyOffset(dateKey) {
-        const compactDate = Number(dateKey.replaceAll("-", ""));
+        const compactDate = Number(dateKey.replace(/-/g, ""));
         return compactDate % missions.length;
       }
 
       function getDailyMission(index) {
-        return missions[(getDailyOffset(today) + index) % missions.length];
+        const offset = getDailyOffset(today);
+        return missions[(offset + index) % missions.length] || missions[0];
       }
 
       const today = getKoreanDateKey();

@@ -70,6 +70,12 @@ a {
   background: #fff;
   font-size: 14px;
   font-weight: 900;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background 140ms ease,
+    border-color 140ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .category-link.active,
@@ -89,11 +95,23 @@ a {
   background: #fff;
   font-size: 14px;
   font-weight: 950;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background 140ms ease,
+    border-color 140ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .login-link:hover {
   border-color: var(--brand);
   color: var(--brand);
+}
+
+.category-link:active,
+.login-link:active {
+  transform: translateY(2px) scale(0.98);
+  box-shadow: inset 0 0 0 999px rgba(15, 107, 255, 0.08);
 }
 
 .page {
@@ -214,6 +232,11 @@ h1 {
   font: inherit;
   font-size: 13px;
   font-weight: 900;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background 140ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .sentence-box {
@@ -274,6 +297,17 @@ h1 {
   background: var(--brand);
   font: inherit;
   font-weight: 950;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    filter 140ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.reset-day-btn:active,
+.mission-submit:active:not(:disabled) {
+  transform: translateY(2px) scale(0.98);
+  filter: brightness(0.94);
 }
 
 .mission-submit:disabled {
@@ -359,6 +393,19 @@ h1 {
   padding: 24px;
   background: #fff;
   box-shadow: 0 16px 34px rgba(15, 107, 255, 0.12);
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    border-color 150ms ease,
+    background 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mission-icon-card:active {
+  transform: translateY(3px) scale(0.985);
+  border-color: #073b92;
+  background: #eef5ff;
+  box-shadow: 0 8px 18px rgba(15, 107, 255, 0.14);
 }
 
 .mission-icon-card b {
