@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>개초급 | IELTS 11</title>
-    <link rel="stylesheet" href="pages.css?v=mobile-nav-1" />
+    <title>개초급 60일 과정 | IELTS 11</title>
+    <link rel="stylesheet" href="pages.css?v=beginner-60-1" />
   </head>
   <body>
     <header class="nav">
@@ -17,17 +17,92 @@
         <a class="login-link" href="login.html">로그인</a>
       </nav>
     </header>
-    <main class="page">
-      <section class="page-hero">
-        <p class="eyebrow">Start From Zero</p>
-        <h1>개초급</h1>
-        <p>영어 문장이 아직 불안한 학습자를 위한 IELTS 입문 페이지입니다.</p>
+
+    <main class="page beginner-course-page">
+      <section class="page-hero beginner-course-hero">
+        <p class="eyebrow">IELTS General Training · 60 Days</p>
+        <h1>호주 취업 영어 60일</h1>
+        <p>영어 첫 문장부터 용접사 취업 면접까지, 하루 60분씩 순서대로 완성합니다.</p>
+        <div class="course-progress" aria-label="전체 학습 진도">
+          <div>
+            <span>완료한 학습</span>
+            <strong id="completedDays">0 / 60일</strong>
+          </div>
+          <div class="course-progress-track" aria-hidden="true"><span id="courseProgressBar"></span></div>
+          <b id="courseProgressPercent">0%</b>
+        </div>
       </section>
-      <section class="mission-grid">
-        <article><b>STEP 1</b><h2>기본 문장 만들기</h2><p>주어, 동사, 목적어 순서로 짧은 답변을 만듭니다.</p></article>
-        <article><b>STEP 2</b><h2>답변 틀 외우기</h2><p>I think, because, for example 구조로 말하기를 시작합니다.</p></article>
-        <article><b>STEP 3</b><h2>쉬운 주제 반복</h2><p>일상, 학교, 취미 주제로 자신 있는 문장을 늘립니다.</p></article>
+
+      <section class="daily-allocation" aria-labelledby="allocationTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Daily Plan</p>
+          <h2 id="allocationTitle">매일 60분 학습량</h2>
+        </div>
+        <div class="allocation-grid">
+          <div><b>8분</b><span>복습</span><small>전날 문장 3개</small></div>
+          <div><b>8분</b><span>단어</span><small>핵심 단어 6~10개</small></div>
+          <div><b>10분</b><span>Listening</span><small>문장 1개, 3회</small></div>
+          <div><b>8분</b><span>Reading</span><small>짧은 안내문</small></div>
+          <div><b>12분</b><span>문장 만들기</span><small>기본 문장 3개</small></div>
+          <div><b>8분</b><span>Speaking</span><small>답변 3문장</small></div>
+          <div><b>6분</b><span>인터뷰</span><small>질문 1개</small></div>
+        </div>
+      </section>
+
+      <section class="course-map" aria-labelledby="courseMapTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Course Map</p>
+          <h2 id="courseMapTitle">60일 학습 과정</h2>
+        </div>
+        <div id="coursePhases"></div>
       </section>
     </main>
+
+    <script src="beginner-course.js?v=beginner-60-1"></script>
+    <script>
+      (function () {
+        let completed = {};
+        try {
+          completed = JSON.parse(localStorage.getItem("ielts11-beginner-completed") || "{}") || {};
+        } catch (error) {
+          completed = {};
+        }
+        const phasesEl = document.getElementById("coursePhases");
+        const days = window.IELTS11_BEGINNER_DAYS || [];
+        const phases = window.IELTS11_BEGINNER_PHASES || [];
+
+        phases.forEach(function (phase, phaseIndex) {
+          const section = document.createElement("section");
+          section.className = "course-phase";
+          const phaseDays = days.slice(phaseIndex * 10, phaseIndex * 10 + 10);
+          section.innerHTML =
+            '<div class="phase-heading"><div><span>' + phase.name + '</span><h3>' + phase.title +
+            '</h3></div><b>DAY ' + phase.days + '</b></div><div class="day-icon-grid"></div>';
+          const grid = section.querySelector(".day-icon-grid");
+
+          phaseDays.forEach(function (item) {
+            const link = document.createElement("a");
+            const isDone = Boolean(completed[item.day]);
+            link.className = "day-icon" + (isDone ? " is-complete" : "");
+            link.href = "beginner-day.html?day=" + item.day;
+            link.innerHTML =
+              '<span class="day-number">' + item.day + '</span><div><b>DAY ' + item.day +
+              '</b><strong>' + item.title + '</strong></div><i aria-hidden="true">' +
+              (isDone ? "완료" : "시작") + "</i>";
+            grid.appendChild(link);
+          });
+
+          phasesEl.appendChild(section);
+        });
+
+        const completedCount = days.filter(function (item) {
+          return Boolean(completed[item.day]);
+        }).length;
+        const percent = Math.round((completedCount / 60) * 100);
+        document.getElementById("completedDays").textContent = completedCount + " / 60일";
+        document.getElementById("courseProgressPercent").textContent = percent + "%";
+        document.getElementById("courseProgressBar").style.width = percent + "%";
+      })();
+    </script>
   </body>
 </html>
