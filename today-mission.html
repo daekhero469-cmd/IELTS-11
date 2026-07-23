@@ -113,7 +113,25 @@
         { text: "Can I make a reservation for two people?", hint: "두 명 예약할 수 있을까요?" },
       ];
 
-      const today = new Date().toISOString().slice(0, 10);
+      function getKoreanDateKey() {
+        return new Intl.DateTimeFormat("en-CA", {
+          timeZone: "Asia/Seoul",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }).format(new Date());
+      }
+
+      function getDailyOffset(dateKey) {
+        const compactDate = Number(dateKey.replaceAll("-", ""));
+        return compactDate % missions.length;
+      }
+
+      function getDailyMission(index) {
+        return missions[(getDailyOffset(today) + index) % missions.length];
+      }
+
+      const today = getKoreanDateKey();
       const storageKey = `ielts11-daily-mission-${today}`;
       const indexKey = `ielts11-daily-mission-index-${today}`;
       const speakingStorageKey = `ielts11-speaking-mission-${today}`;
@@ -169,7 +187,7 @@
 
       function renderMission() {
         const count = getCount();
-        const current = missions[getIndex()];
+        const current = getDailyMission(getIndex());
         countEl.textContent = `${count} / 3`;
         targetEl.textContent = count >= 3 ? "오늘 미션을 모두 완료했습니다." : current.text;
         hintEl.textContent = count >= 3 ? "내일 다시 3개 미션을 진행할 수 있습니다." : current.hint;
@@ -181,7 +199,7 @@
 
       function renderSpeakingMission() {
         const count = getSpeakingCount();
-        const current = missions[getSpeakingIndex()];
+        const current = getDailyMission(getSpeakingIndex());
         speakingCountEl.textContent = `${count} / 3`;
         speakingSentenceEl.textContent = count >= 3 ? "오늘 음성 미션을 모두 완료했습니다." : current.text;
         speakingHintEl.textContent = count >= 3 ? "내일 다시 3개 음성 미션을 진행할 수 있습니다." : current.hint;
@@ -216,7 +234,7 @@
       function playCurrentSentence() {
         const count = getSpeakingCount();
         if (count >= 3) return;
-        const current = missions[getSpeakingIndex()];
+        const current = getDailyMission(getSpeakingIndex());
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(`${current.text} `);
         const selectedVoice =
@@ -241,7 +259,7 @@
         }
 
         const currentIndex = getIndex();
-        const current = missions[currentIndex];
+        const current = getDailyMission(currentIndex);
         if (inputEl.value.trim() !== current.text) {
           messageEl.textContent = "문장이 아직 정확하지 않습니다. 다시 확인하세요.";
           inputEl.focus();
@@ -285,7 +303,7 @@
         }
 
         const currentIndex = getSpeakingIndex();
-        const current = missions[currentIndex];
+        const current = getDailyMission(currentIndex);
         window.speechSynthesis.cancel();
         if (recognition) {
           try {
