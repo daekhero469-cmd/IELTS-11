@@ -177,6 +177,24 @@ h1 {
     flex-direction: column;
   }
 
+  .nav-actions {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .nav-actions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-link,
+  .login-link {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
   .mission-grid {
     grid-template-columns: 1fr;
   }

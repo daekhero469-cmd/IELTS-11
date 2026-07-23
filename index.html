@@ -400,7 +400,34 @@
       }
 
       @media (max-width: 900px) {
-        .nav-actions span,
+        .nav {
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        .nav-actions {
+          width: 100%;
+          overflow-x: auto;
+          flex-wrap: nowrap;
+          padding-bottom: 4px;
+          scrollbar-width: none;
+        }
+
+        .nav-actions::-webkit-scrollbar {
+          display: none;
+        }
+
+        .nav-actions span {
+          display: inline;
+        }
+
+        .category-link,
+        .outline-btn,
+        .primary-btn {
+          flex: 0 0 auto;
+          white-space: nowrap;
+        }
+
         .outline-btn {
           display: none;
         }
