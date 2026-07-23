@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>오늘 미션 | IELTS 11</title>
-    <link rel="stylesheet" href="pages.css?v=mission-1" />
+    <link rel="stylesheet" href="pages.css?v=galaxy-2" />
   </head>
   <body>
     <header class="nav">
@@ -36,8 +36,8 @@
 
         <div class="sentence-box">
           <p class="sentence-label">생활영어 문장</p>
-          <h2 id="targetSentence">Loading...</h2>
-          <p class="sentence-ko" id="sentenceHint"></p>
+          <h2 id="targetSentence">I usually drink coffee in the morning.</h2>
+          <p class="sentence-ko" id="sentenceHint">나는 보통 아침에 커피를 마십니다.</p>
         </div>
 
         <label class="typing-field" for="typingInput">
@@ -62,13 +62,14 @@
 
         <div class="sentence-box">
           <p class="sentence-label">듣고 따라 읽기</p>
-          <h2 id="speakingSentence">Loading...</h2>
-          <p class="sentence-ko" id="speakingHint"></p>
+          <h2 id="speakingSentence">I usually drink coffee in the morning.</h2>
+          <p class="sentence-ko" id="speakingHint">나는 보통 아침에 커피를 마십니다.</p>
         </div>
 
         <div class="speech-controls">
           <button class="mission-submit audio-btn" type="button" id="playSentence">문장 듣기</button>
           <button class="mission-submit start-btn" type="button" id="startSpeaking">스타트</button>
+          <a class="mission-submit chrome-open-link" id="openInChrome" href="#" hidden>Chrome에서 열기</a>
         </div>
 
         <div class="speech-result">
@@ -121,9 +122,12 @@
             month: "2-digit",
             day: "2-digit",
           }).formatToParts(new Date());
-          const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+          const values = {};
+          parts.forEach((part) => {
+            values[part.type] = part.value;
+          });
           return `${values.year}-${values.month}-${values.day}`;
-        } catch {
+        } catch (error) {
           const koreaTime = new Date(Date.now() + 9 * 60 * 60 * 1000);
           const year = koreaTime.getUTCFullYear();
           const month = String(koreaTime.getUTCMonth() + 1).padStart(2, "0");
@@ -164,36 +168,68 @@
       const speechMessageEl = document.getElementById("speechMessage");
       const resetSpeakingBtn = document.getElementById("resetSpeaking");
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const speechSynthesisSupported =
+        "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+      const openInChromeEl = document.getElementById("openInChrome");
       let recognition = null;
       let englishVoices = [];
+      let recognitionTimeout = null;
+      let recognitionFinished = false;
+      let speechStartTimer = null;
 
-      function loadEnglishVoices() {
-        englishVoices = window.speechSynthesis
-          .getVoices()
-          .filter((voice) => /^en[-_]/i.test(voice.lang))
-          .sort((a, b) => {
-            const preferred = /(natural|neural|google|microsoft|samantha|daniel|karen|moira|ava|jenny|aria)/i;
-            return Number(preferred.test(b.name)) - Number(preferred.test(a.name));
-          });
+      function readStorage(key) {
+        try {
+          return window.localStorage.getItem(key);
+        } catch (error) {
+          return null;
+        }
       }
 
-      loadEnglishVoices();
-      window.speechSynthesis.onvoiceschanged = loadEnglishVoices;
+      function writeStorage(key, value) {
+        try {
+          window.localStorage.setItem(key, value);
+        } catch (error) {
+          // The mission remains usable if private mode blocks storage.
+        }
+      }
+
+      function removeStorage(key) {
+        try {
+          window.localStorage.removeItem(key);
+        } catch (error) {
+          // Ignore storage errors in restricted browser modes.
+        }
+      }
+
+      function loadEnglishVoices() {
+        if (!speechSynthesisSupported) return;
+        try {
+          englishVoices = window.speechSynthesis
+            .getVoices()
+            .filter((voice) => /^en[-_]/i.test(voice.lang))
+            .sort((a, b) => {
+              const preferred = /(natural|neural|google|microsoft|samantha|daniel|karen|moira|ava|jenny|aria)/i;
+              return Number(preferred.test(b.name)) - Number(preferred.test(a.name));
+            });
+        } catch (error) {
+          englishVoices = [];
+        }
+      }
 
       function getCount() {
-        return Number(localStorage.getItem(storageKey) || "0");
+        return Number(readStorage(storageKey) || "0");
       }
 
       function getIndex() {
-        return Number(localStorage.getItem(indexKey) || "0") % missions.length;
+        return Number(readStorage(indexKey) || "0") % missions.length;
       }
 
       function getSpeakingCount() {
-        return Number(localStorage.getItem(speakingStorageKey) || "0");
+        return Number(readStorage(speakingStorageKey) || "0");
       }
 
       function getSpeakingIndex() {
-        return Number(localStorage.getItem(speakingIndexKey) || "0") % missions.length;
+        return Number(readStorage(speakingIndexKey) || "0") % missions.length;
       }
 
       function renderMission() {
@@ -214,15 +250,16 @@
         speakingCountEl.textContent = `${count} / 3`;
         speakingSentenceEl.textContent = count >= 3 ? "오늘 음성 미션을 모두 완료했습니다." : current.text;
         speakingHintEl.textContent = count >= 3 ? "내일 다시 3개 음성 미션을 진행할 수 있습니다." : current.hint;
-        playBtn.disabled = count >= 3;
+        playBtn.disabled = count >= 3 || !speechSynthesisSupported;
         startBtn.disabled = count >= 3 || !SpeechRecognition;
         recognizedEl.textContent = SpeechRecognition ? "아직 녹음 전입니다." : "이 브라우저는 음성인식을 지원하지 않습니다.";
         speechScoreEl.textContent = "0점";
+        openInChromeEl.hidden = Boolean(SpeechRecognition) || count >= 3;
         speechMessageEl.textContent = count >= 3
           ? "오늘 가능한 3개 음성 미션을 완료했습니다."
           : SpeechRecognition
             ? "먼저 문장을 듣고 스타트 버튼을 누르세요."
-            : "Chrome 계열 브라우저에서 음성 미션을 이용하세요.";
+            : "갤럭시에서는 Chrome으로 열면 음성인식을 사용할 수 있습니다.";
       }
 
       function normalizeSpeech(text) {
@@ -244,8 +281,12 @@
 
       function playCurrentSentence() {
         const count = getSpeakingCount();
-        if (count >= 3) return;
+        if (count >= 3 || !speechSynthesisSupported) {
+          speechMessageEl.textContent = "이 브라우저에서는 문장 듣기를 지원하지 않습니다.";
+          return;
+        }
         const current = getDailyMission(getSpeakingIndex());
+        window.clearTimeout(speechStartTimer);
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(`${current.text} `);
         const selectedVoice =
@@ -259,7 +300,26 @@
         utterance.rate = 0.92;
         utterance.pitch = 1.03;
         utterance.volume = 1;
-        window.speechSynthesis.speak(utterance);
+        playBtn.disabled = true;
+        speechMessageEl.textContent = "문장을 재생합니다.";
+        utterance.onend = () => {
+          playBtn.disabled = getSpeakingCount() >= 3;
+          speechMessageEl.textContent = "문장을 들었습니다. 이제 스타트를 누르고 읽어주세요.";
+        };
+        utterance.onerror = () => {
+          playBtn.disabled = false;
+          speechMessageEl.textContent = "음성 재생에 실패했습니다. 휴대폰의 미디어 음량을 확인하고 다시 눌러주세요.";
+        };
+        speechStartTimer = window.setTimeout(() => {
+          speechStartTimer = null;
+          try {
+            window.speechSynthesis.resume();
+            window.speechSynthesis.speak(utterance);
+          } catch (error) {
+            playBtn.disabled = false;
+            speechMessageEl.textContent = "음성 재생을 시작하지 못했습니다. 페이지를 새로고침해 주세요.";
+          }
+        }, 80);
       }
 
       checkBtn.addEventListener("click", () => {
@@ -277,8 +337,8 @@
           return;
         }
 
-        localStorage.setItem(storageKey, String(count + 1));
-        localStorage.setItem(indexKey, String(currentIndex + 1));
+        writeStorage(storageKey, String(count + 1));
+        writeStorage(indexKey, String(currentIndex + 1));
         messageEl.textContent = "정상 입력되었습니다. 다음 문장으로 넘어갑니다.";
         renderMission();
       });
@@ -290,23 +350,14 @@
       });
 
       resetBtn.addEventListener("click", () => {
-        localStorage.removeItem(storageKey);
-        localStorage.removeItem(indexKey);
+        removeStorage(storageKey);
+        removeStorage(indexKey);
         renderMission();
       });
 
       playBtn.addEventListener("click", playCurrentSentence);
 
-      async function ensureMicrophonePermission() {
-        if (!navigator.mediaDevices?.getUserMedia) {
-          return true;
-        }
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        stream.getTracks().forEach((track) => track.stop());
-        return true;
-      }
-
-      startBtn.addEventListener("click", async () => {
+      startBtn.addEventListener("click", () => {
         const count = getSpeakingCount();
         if (count >= 3 || !SpeechRecognition) {
           renderSpeakingMission();
@@ -315,22 +366,15 @@
 
         const currentIndex = getSpeakingIndex();
         const current = getDailyMission(currentIndex);
+        window.clearTimeout(speechStartTimer);
+        speechStartTimer = null;
         window.speechSynthesis.cancel();
         if (recognition) {
           try {
             recognition.abort();
-          } catch {
+          } catch (error) {
             // Ignore abort errors from inactive recognition sessions.
           }
-        }
-
-        try {
-          speechMessageEl.textContent = "마이크 권한을 확인하고 있습니다.";
-          await ensureMicrophonePermission();
-        } catch {
-          speechMessageEl.textContent = "마이크 권한이 필요합니다. 브라우저 주소창의 마이크 권한을 허용하세요.";
-          startBtn.disabled = false;
-          return;
         }
 
         recognition = new SpeechRecognition();
@@ -338,20 +382,39 @@
         recognition.continuous = false;
         recognition.interimResults = false;
         recognition.maxAlternatives = 1;
+        recognitionFinished = false;
         startBtn.disabled = true;
-        speechMessageEl.textContent = "듣고 있습니다. 문장을 또박또박 읽어주세요.";
+        recognizedEl.textContent = "마이크 연결 중...";
+        speechMessageEl.textContent = "마이크 사용을 허용해 주세요.";
+
+        recognition.onstart = () => {
+          recognizedEl.textContent = "듣고 있습니다...";
+          speechMessageEl.textContent = "지금 영어 문장을 읽어주세요.";
+          window.clearTimeout(recognitionTimeout);
+          recognitionTimeout = window.setTimeout(() => {
+            try {
+              recognition.stop();
+            } catch (error) {
+              // Recognition may already have ended.
+            }
+          }, 12000);
+        };
 
         recognition.onresult = (event) => {
+          recognitionFinished = true;
+          window.clearTimeout(recognitionTimeout);
           const spoken = event.results[0][0].transcript;
           const score = scoreSpeech(current.text, spoken);
           recognizedEl.textContent = spoken;
           speechScoreEl.textContent = `${score}점`;
 
           if (score >= 80) {
-            localStorage.setItem(speakingStorageKey, String(count + 1));
-            localStorage.setItem(speakingIndexKey, String(currentIndex + 1));
-            speechMessageEl.textContent = "통과했습니다. 다음 문장으로 넘어갑니다.";
+            writeStorage(speakingStorageKey, String(count + 1));
+            writeStorage(speakingIndexKey, String(currentIndex + 1));
             renderSpeakingMission();
+            recognizedEl.textContent = spoken;
+            speechScoreEl.textContent = `${score}점`;
+            speechMessageEl.textContent = "통과했습니다. 다음 문장으로 넘어갑니다.";
             return;
           }
 
@@ -360,16 +423,28 @@
         };
 
         recognition.onerror = (event) => {
+          recognitionFinished = true;
+          window.clearTimeout(recognitionTimeout);
           const reason = event.error === "not-allowed"
             ? "마이크 권한이 차단되었습니다. 브라우저 설정에서 마이크를 허용하세요."
+            : event.error === "service-not-allowed"
+              ? "이 브라우저의 음성인식 서비스가 차단되었습니다. Chrome으로 다시 열어주세요."
+              : event.error === "network"
+                ? "음성인식 서버에 연결하지 못했습니다. 인터넷 연결을 확인하세요."
             : event.error === "no-speech"
               ? "음성이 감지되지 않았습니다. 스타트를 누른 뒤 바로 문장을 읽어주세요."
-              : "음성 인식에 실패했습니다. Chrome에서 HTTPS 공개 주소로 다시 시도하세요.";
+              : "음성 인식에 실패했습니다. Chrome에서 다시 시도하세요.";
           speechMessageEl.textContent = reason;
+          recognizedEl.textContent = "인식 결과 없음";
           startBtn.disabled = false;
         };
 
         recognition.onend = () => {
+          window.clearTimeout(recognitionTimeout);
+          if (!recognitionFinished) {
+            recognizedEl.textContent = "인식 결과 없음";
+            speechMessageEl.textContent = "음성이 인식되지 않았습니다. 스타트를 다시 누르고 바로 읽어주세요.";
+          }
           if (getSpeakingCount() < 3) {
             startBtn.disabled = false;
           }
@@ -377,20 +452,40 @@
 
         try {
           recognition.start();
-        } catch {
+        } catch (error) {
           speechMessageEl.textContent = "음성인식을 시작하지 못했습니다. 페이지를 새로고침한 뒤 다시 시도하세요.";
+          recognizedEl.textContent = "인식 시작 실패";
           startBtn.disabled = false;
         }
       });
 
       resetSpeakingBtn.addEventListener("click", () => {
-        localStorage.removeItem(speakingStorageKey);
-        localStorage.removeItem(speakingIndexKey);
+        removeStorage(speakingStorageKey);
+        removeStorage(speakingIndexKey);
         renderSpeakingMission();
       });
 
-      renderMission();
-      renderSpeakingMission();
+      openInChromeEl.addEventListener("click", (event) => {
+        event.preventDefault();
+        const cleanUrl = window.location.href.replace(/^https?:\/\//, "");
+        window.location.href = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+      });
+
+      try {
+        renderMission();
+        renderSpeakingMission();
+      } catch (error) {
+        targetEl.textContent = missions[0].text;
+        hintEl.textContent = missions[0].hint;
+        speakingSentenceEl.textContent = missions[0].text;
+        speakingHintEl.textContent = missions[0].hint;
+        speechMessageEl.textContent = "일부 기능을 초기화하지 못했습니다. 페이지를 새로고침해 주세요.";
+      }
+
+      loadEnglishVoices();
+      if (speechSynthesisSupported && "onvoiceschanged" in window.speechSynthesis) {
+        window.speechSynthesis.onvoiceschanged = loadEnglishVoices;
+      }
     </script>
   </body>
 </html>
