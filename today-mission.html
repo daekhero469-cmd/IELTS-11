@@ -136,6 +136,20 @@
       const resetSpeakingBtn = document.getElementById("resetSpeaking");
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       let recognition = null;
+      let englishVoices = [];
+
+      function loadEnglishVoices() {
+        englishVoices = window.speechSynthesis
+          .getVoices()
+          .filter((voice) => /^en[-_]/i.test(voice.lang))
+          .sort((a, b) => {
+            const preferred = /(natural|neural|google|microsoft|samantha|daniel|karen|moira|ava|jenny|aria)/i;
+            return Number(preferred.test(b.name)) - Number(preferred.test(a.name));
+          });
+      }
+
+      loadEnglishVoices();
+      window.speechSynthesis.onvoiceschanged = loadEnglishVoices;
 
       function getCount() {
         return Number(localStorage.getItem(storageKey) || "0");
@@ -204,9 +218,18 @@
         if (count >= 3) return;
         const current = missions[getSpeakingIndex()];
         window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(current.text);
+        const utterance = new SpeechSynthesisUtterance(`${current.text} `);
+        const selectedVoice =
+          englishVoices.find((voice) => /natural|neural|google|microsoft/i.test(voice.name)) ||
+          englishVoices.find((voice) => /en-US/i.test(voice.lang)) ||
+          englishVoices[0];
+        if (selectedVoice) {
+          utterance.voice = selectedVoice;
+        }
         utterance.lang = "en-US";
-        utterance.rate = 0.86;
+        utterance.rate = 0.92;
+        utterance.pitch = 1.03;
+        utterance.volume = 1;
         window.speechSynthesis.speak(utterance);
       }
 
