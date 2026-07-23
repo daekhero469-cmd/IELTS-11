@@ -1474,6 +1474,69 @@ h1 {
   color-scheme: dark;
 }
 
+.webtoon-slot {
+  margin: 18px 0 24px;
+  overflow: hidden;
+  border: 1px solid rgba(122, 155, 222, 0.34);
+  border-radius: 8px;
+  background: #0c101b;
+}
+
+.webtoon-slot-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(122, 155, 222, 0.25);
+}
+
+.webtoon-slot-heading span {
+  color: #65dff5;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.webtoon-slot-heading strong {
+  color: #f5f7ff;
+  font-size: 17px;
+}
+
+.webtoon-placeholder {
+  display: grid;
+  min-height: 360px;
+  place-content: center;
+  text-align: center;
+  background:
+    linear-gradient(rgba(6, 10, 20, 0.5), rgba(6, 10, 20, 0.76)),
+    url("assets/beginner-galaxy.png") center / cover;
+}
+
+.webtoon-placeholder span {
+  color: #65dff5;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.webtoon-placeholder b {
+  margin-top: 8px;
+  color: #ffffff;
+  font-size: 30px;
+}
+
+html[data-theme="light"] .webtoon-slot {
+  border-color: #ccd6e8;
+  background: #ffffff;
+}
+
+html[data-theme="light"] .webtoon-slot-heading {
+  border-color: #dce3ef;
+}
+
+html[data-theme="light"] .webtoon-slot-heading strong {
+  color: #151b27;
+}
+
 @media (max-width: 860px) {
   .nav {
     align-items: flex-start;
@@ -1625,6 +1688,10 @@ h1 {
 
   .day-completion button {
     width: 100%;
+  }
+
+  .webtoon-placeholder {
+    min-height: 260px;
   }
 }
 

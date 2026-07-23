@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1 개초급 30일 영어 튜토리얼 | IELTS 11</title>
-    <link rel="stylesheet" href="pages.css?v=beginner-split-1" />
+    <title>2 개초급 IELTS 60일 과정 | IELTS 11</title>
+    <link rel="stylesheet" href="pages.css?v=galaxy-course-3" />
     <script src="theme.js?v=theme-1"></script>
   </head>
   <body class="beginner-space-theme">
@@ -12,8 +12,8 @@
       <a class="brand" href="index.html"><span class="brand-mark">I</span>IELTS 11</a>
       <nav class="nav-actions">
         <a class="category-link" href="today-mission.html">✓ 오늘 미션</a>
-        <a class="category-link active" href="beginner.html">1 개초급</a>
-        <a class="category-link" href="beginner-2.html">2 개초급</a>
+        <a class="category-link" href="beginner.html">1 개초급</a>
+        <a class="category-link active" href="beginner-2.html">2 개초급</a>
         <a class="category-link" href="intermediate.html">2 어나더 중급</a>
         <a class="category-link" href="advanced-2xl.html">XL 2XL상급</a>
         <a class="login-link" href="login.html">로그인</a>
@@ -22,13 +22,13 @@
 
     <main class="page beginner-course-page">
       <section class="page-hero beginner-course-hero">
-        <p class="eyebrow">English Tutorial · 30 Days</p>
-        <h1>영어 첫걸음 30일</h1>
-        <p>자기소개부터 호주 생활영어와 현장 기초영어까지, 하루 60분씩 순서대로 익힙니다.</p>
+        <p class="eyebrow">IELTS General Training · 60 Days</p>
+        <h1>IELTS GT 기초 60일</h1>
+        <p>생활 주제부터 Listening, General Reading, Writing Task 1, Speaking 실전까지 하루 약 100분씩 훈련합니다.</p>
         <div class="course-progress" aria-label="전체 학습 진도">
           <div>
             <span>완료한 학습</span>
-            <strong id="completedDays">0 / 30일</strong>
+            <strong id="completedDays">0 / 60일</strong>
           </div>
           <div class="course-progress-track" aria-hidden="true"><span id="courseProgressBar"></span></div>
           <b id="courseProgressPercent">0%</b>
@@ -38,34 +38,34 @@
       <section class="daily-allocation" aria-labelledby="allocationTitle">
         <div class="section-heading">
           <p class="eyebrow">Daily Plan</p>
-          <h2 id="allocationTitle">매일 60분 학습량</h2>
+          <h2 id="allocationTitle">매일 약 100분 학습량</h2>
         </div>
         <div class="allocation-grid">
-          <div><b>8분</b><span>복습</span><small>전날 문장 3개</small></div>
-          <div><b>8분</b><span>단어</span><small>핵심 단어 10개</small></div>
-          <div><b>10분</b><span>Listening</span><small>문장 1개, 3회</small></div>
-          <div><b>8분</b><span>Reading</span><small>짧은 안내문</small></div>
-          <div><b>12분</b><span>문장 만들기</span><small>기본 문장 3개</small></div>
-          <div><b>8분</b><span>Speaking</span><small>답변 3문장</small></div>
-          <div><b>6분</b><span>인터뷰</span><small>질문 1개</small></div>
+          <div><b>10분</b><span>복습</span><small>전날 핵심 표현</small></div>
+          <div><b>12분</b><span>단어</span><small>매일 8개</small></div>
+          <div><b>18분</b><span>Listening</span><small>문장 2개, 3회</small></div>
+          <div><b>15분</b><span>Reading</span><small>독립 지문과 근거</small></div>
+          <div><b>20분</b><span>Writing</span><small>모델과 5문장</small></div>
+          <div><b>15분</b><span>Speaking</span><small>3문장 답변</small></div>
+          <div><b>10분</b><span>실전 문답</span><small>2문장 요약</small></div>
         </div>
       </section>
 
       <section class="course-map" aria-labelledby="courseMapTitle">
         <div class="section-heading">
           <p class="eyebrow">Course Map</p>
-          <h2 id="courseMapTitle">30일 학습 과정</h2>
+          <h2 id="courseMapTitle">60일 학습 과정</h2>
         </div>
         <div id="coursePhases"></div>
       </section>
     </main>
 
-    <script src="beginner-1-course.js?v=beginner-split-1"></script>
+    <script src="beginner-course.js?v=gt-60-3"></script>
     <script>
       (function () {
         let completed = {};
         try {
-          completed = JSON.parse(localStorage.getItem("ielts11-beginner1-completed") || "{}") || {};
+          completed = JSON.parse(localStorage.getItem("ielts11-beginner2-completed") || "{}") || {};
         } catch (error) {
           completed = {};
         }
@@ -86,7 +86,7 @@
             const link = document.createElement("a");
             const isDone = Boolean(completed[item.day]);
             link.className = "day-icon" + (isDone ? " is-complete" : "");
-            link.href = "beginner-day.html?day=" + item.day;
+            link.href = "beginner-2-day.html?day=" + item.day;
             link.innerHTML =
               '<span class="day-number">' + item.day + '</span><div><b>DAY ' + item.day +
               '</b><strong>' + item.title + '</strong></div><i aria-hidden="true">' +
@@ -100,8 +100,8 @@
         const completedCount = days.filter(function (item) {
           return Boolean(completed[item.day]);
         }).length;
-        const percent = Math.round((completedCount / 30) * 100);
-        document.getElementById("completedDays").textContent = completedCount + " / 30일";
+        const percent = Math.round((completedCount / 60) * 100);
+        document.getElementById("completedDays").textContent = completedCount + " / 60일";
         document.getElementById("courseProgressPercent").textContent = percent + "%";
         document.getElementById("courseProgressBar").style.width = percent + "%";
       })();
