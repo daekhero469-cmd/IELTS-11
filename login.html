@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로그인 | IELTS 11</title>
+    <link rel="stylesheet" href="pages.css" />
+    <style>
+      body {
+        background:
+          linear-gradient(90deg, rgba(7, 23, 57, 0.94), rgba(7, 23, 57, 0.7)),
+          url("https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1800&q=80")
+            center / cover;
+      }
+
+      .login-shell {
+        display: grid;
+        min-height: calc(100vh - 77px);
+        place-items: center;
+        padding: 44px 20px;
+      }
+
+      .login-panel {
+        width: min(100%, 440px);
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        border-radius: 8px;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.97);
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+      }
+
+      .login-panel h1 {
+        margin: 0 0 10px;
+        font-size: 36px;
+        line-height: 1.15;
+      }
+
+      .login-panel p {
+        margin: 0 0 24px;
+        color: var(--muted);
+        line-height: 1.55;
+        font-weight: 650;
+      }
+
+      .social-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .social-btn {
+        display: flex;
+        min-height: 54px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0 16px;
+        background: #fff;
+        font-weight: 950;
+      }
+
+      .social-btn.google {
+        color: #1f2937;
+      }
+
+      .social-btn.naver {
+        border-color: #03c75a;
+        color: #fff;
+        background: #03c75a;
+      }
+
+      .social-btn.kakao {
+        border-color: #fee500;
+        color: #181600;
+        background: #fee500;
+      }
+
+      .provider-mark {
+        display: grid;
+        width: 28px;
+        height: 28px;
+        place-items: center;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.82);
+        font-size: 14px;
+        font-weight: 950;
+      }
+
+      .login-note {
+        margin-top: 18px;
+        border-radius: 8px;
+        padding: 14px;
+        color: #5f6b7a;
+        background: #f6f8fb;
+        font-size: 13px;
+        line-height: 1.45;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <a class="brand" href="index.html"><span class="brand-mark">I</span>IELTS 11</a>
+      <nav class="nav-actions">
+        <a class="category-link" href="today-mission.html">✓ 오늘 미션</a>
+        <a class="category-link" href="beginner.html">1 개초급</a>
+        <a class="category-link" href="intermediate.html">2 중급</a>
+        <a class="category-link" href="advanced-2xl.html">XL 2XL상급</a>
+      </nav>
+    </header>
+
+    <main class="login-shell">
+      <section class="login-panel" aria-label="소셜 로그인">
+        <h1>로그인</h1>
+        <p>IELTS 11 학습 미션과 레벨별 수업을 이어서 진행하세요.</p>
+        <div class="social-list">
+          <a class="social-btn google" href="#" aria-label="구글로 로그인">
+            <span class="provider-mark">G</span>
+            구글로 계속하기
+          </a>
+          <a class="social-btn naver" href="#" aria-label="네이버로 로그인">
+            <span class="provider-mark">N</span>
+            네이버로 계속하기
+          </a>
+          <a class="social-btn kakao" href="#" aria-label="카카오톡으로 로그인">
+            <span class="provider-mark">K</span>
+            카카오톡으로 계속하기
+          </a>
+        </div>
+        <div class="login-note">
+          실제 인증 연결에는 각 플랫폼 OAuth Client ID, Redirect URI, 백엔드 콜백 처리가 필요합니다.
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

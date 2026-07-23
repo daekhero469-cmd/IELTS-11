@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS 11 | 목표 점수 달성 이벤트</title>
+    <style>
+      :root {
+        --ink: #121826;
+        --muted: #5f6b7a;
+        --line: #e7ecf3;
+        --paper: #ffffff;
+        --soft: #f6f8fb;
+        --brand: #0f6bff;
+        --brand-dark: #073b92;
+        --accent: #ffcf33;
+        --danger: #ff5a3c;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        font-family:
+          Inter, Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: var(--paper);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .top-strip {
+        background: #101828;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        text-align: center;
+        padding: 10px 16px;
+      }
+
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px clamp(20px, 6vw, 72px);
+        background: rgba(255, 255, 255, 0.92);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(14px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 900;
+        letter-spacing: 0;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-radius: 8px;
+        color: #fff;
+        background: var(--brand);
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .category-link {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+        gap: 7px;
+        border-radius: 8px;
+        padding: 0 12px;
+        color: var(--ink);
+        background: #fff;
+        border: 1px solid var(--line);
+        font-weight: 900;
+      }
+
+      .category-link:hover {
+        border-color: rgba(15, 107, 255, 0.42);
+        color: var(--brand);
+      }
+
+      .outline-btn,
+      .primary-btn {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        padding: 0 18px;
+        font-weight: 900;
+      }
+
+      .outline-btn {
+        border: 1px solid var(--line);
+        background: #fff;
+      }
+
+      .primary-btn {
+        border: 1px solid var(--brand);
+        color: #fff;
+        background: var(--brand);
+        box-shadow: 0 10px 24px rgba(15, 107, 255, 0.24);
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        min-height: calc(100vh - 100px);
+        padding: 70px clamp(20px, 6vw, 72px) 42px;
+        background:
+          linear-gradient(90deg, rgba(7, 23, 57, 0.92), rgba(7, 23, 57, 0.64)),
+          url("https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1800&q=80")
+            center / cover;
+        color: #fff;
+      }
+
+      .hero-grid {
+        display: grid;
+        max-width: 1180px;
+        grid-template-columns: minmax(0, 1.05fr) 420px;
+        gap: 48px;
+        align-items: center;
+        margin: 0 auto;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 999px;
+        padding: 8px 12px;
+        color: #101828;
+        background: var(--accent);
+        font-size: 14px;
+        font-weight: 900;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin: 24px 0 18px;
+        font-size: clamp(44px, 7vw, 86px);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .hero-copy {
+        max-width: 650px;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: clamp(18px, 2vw, 23px);
+        line-height: 1.55;
+        font-weight: 650;
+      }
+
+      .hero-points {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        max-width: 680px;
+        margin-top: 34px;
+      }
+
+      .point {
+        min-height: 96px;
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .point strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--accent);
+        font-size: 24px;
+      }
+
+      .point span {
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .coupon-panel {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        padding: 24px;
+        background: rgba(255, 255, 255, 0.96);
+        color: var(--ink);
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+      }
+
+      .coupon-label {
+        color: var(--danger);
+        font-size: 15px;
+        font-weight: 900;
+      }
+
+      .coupon-title {
+        margin: 8px 0 8px;
+        font-size: 34px;
+        line-height: 1.12;
+        font-weight: 950;
+      }
+
+      .coupon-sub {
+        color: var(--muted);
+        line-height: 1.55;
+        font-weight: 650;
+      }
+
+      .price-box {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        margin: 22px 0;
+        padding: 18px;
+        border-radius: 8px;
+        background: var(--soft);
+      }
+
+      .price-box small {
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .price {
+        color: var(--brand);
+        font-size: 42px;
+        font-weight: 950;
+      }
+
+      .timer {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin: 20px 0;
+      }
+
+      .time-cell {
+        padding: 12px 8px;
+        border-radius: 8px;
+        text-align: center;
+        color: #fff;
+        background: #101828;
+      }
+
+      .time-cell b {
+        display: block;
+        font-size: 22px;
+      }
+
+      .time-cell span {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .wide-btn {
+        width: 100%;
+        min-height: 54px;
+      }
+
+      .below {
+        padding: 54px clamp(20px, 6vw, 72px) 96px;
+        background: var(--soft);
+      }
+
+      .category-section {
+        padding: 52px clamp(20px, 6vw, 72px);
+        background: #fff;
+      }
+
+      .section-head {
+        max-width: 1180px;
+        margin: 0 auto 20px;
+      }
+
+      .section-head h2 {
+        margin: 0 0 8px;
+        font-size: clamp(28px, 4vw, 44px);
+      }
+
+      .section-head p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.55;
+        font-weight: 650;
+      }
+
+      .category-grid {
+        display: grid;
+        max-width: 1180px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin: 0 auto;
+      }
+
+      .category-card {
+        min-height: 156px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--soft);
+      }
+
+      .category-card strong {
+        display: block;
+        margin: 12px 0 8px;
+        font-size: 20px;
+      }
+
+      .category-card span {
+        color: var(--muted);
+        line-height: 1.45;
+        font-weight: 650;
+      }
+
+      .category-icon {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border-radius: 8px;
+        color: #fff;
+        background: var(--brand);
+        font-weight: 950;
+      }
+
+      .benefits {
+        display: grid;
+        max-width: 1180px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin: 0 auto;
+      }
+
+      .benefit {
+        min-height: 172px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .benefit-icon {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        margin-bottom: 18px;
+        border-radius: 8px;
+        color: #fff;
+        background: var(--brand-dark);
+        font-weight: 950;
+      }
+
+      .benefit h2 {
+        margin: 0 0 10px;
+        font-size: 21px;
+        line-height: 1.25;
+      }
+
+      .benefit p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+        font-weight: 650;
+      }
+
+      .sticky-cta {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 20;
+      }
+
+      @media (max-width: 900px) {
+        .nav-actions span,
+        .outline-btn {
+          display: none;
+        }
+
+        .hero {
+          min-height: auto;
+          padding-top: 48px;
+        }
+
+        .hero-grid,
+        .benefits,
+        .category-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-points {
+          grid-template-columns: 1fr;
+        }
+
+        .coupon-panel {
+          margin-top: 4px;
+        }
+
+        .sticky-cta {
+          right: 16px;
+          bottom: 16px;
+          left: 16px;
+        }
+
+        .sticky-cta .primary-btn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top-strip">7월 한정 IELTS 목표 점수 달성 쿠폰 이벤트</div>
+
+    <header class="nav">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">I</span>
+        <span>IELTS 11</span>
+      </a>
+      <nav class="nav-actions" aria-label="주요 메뉴">
+        <a class="category-link" href="today-mission.html"><span>✓</span>오늘 미션</a>
+        <a class="category-link" href="beginner.html"><span>1</span>개초급</a>
+        <a class="category-link" href="intermediate.html"><span>2</span>중급</a>
+        <a class="category-link" href="advanced-2xl.html"><span>XL</span>2XL상급</a>
+        <a class="outline-btn" href="login.html">로그인</a>
+        <a class="primary-btn" href="coupon.html">쿠폰 받기</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="IELTS 이벤트 메인">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">선착순 77명 · 신규 수강생 전용</div>
+            <h1>IELTS 목표 점수, 지금 시작하면 더 가볍게</h1>
+            <p class="hero-copy">
+              전문 튜터와 1:1로 Speaking, Writing 약점을 빠르게 잡고
+              목표 밴드까지 가는 학습 플랜을 설계하세요.
+            </p>
+
+            <div class="hero-points" aria-label="핵심 혜택">
+              <div class="point">
+                <strong>1:1</strong>
+                <span>레벨 진단 기반 맞춤 수업</span>
+              </div>
+              <div class="point">
+                <strong>77%</strong>
+                <span>첫 패키지 쿠폰 혜택</span>
+              </div>
+              <div class="point">
+                <strong>24H</strong>
+                <span>수업 후 피드백 리포트</span>
+              </div>
+            </div>
+          </div>
+
+          <aside class="coupon-panel" id="apply" aria-label="쿠폰 신청">
+            <div class="coupon-label">오늘 종료 예정</div>
+            <div class="coupon-title">첫 IELTS 패키지<br />77% 쿠폰</div>
+            <p class="coupon-sub">
+              결제 전 쿠폰을 먼저 받고, 상담에서 현재 점수와 목표 점수에 맞는
+              수업 구성을 확인하세요.
+            </p>
+
+            <div class="price-box">
+              <div>
+                <small>최대 혜택</small>
+                <div class="price">77%</div>
+              </div>
+              <small>선착순 마감</small>
+            </div>
+
+            <div class="timer" aria-label="이벤트 남은 시간">
+              <div class="time-cell"><b>02</b><span>DAY</span></div>
+              <div class="time-cell"><b>11</b><span>HOUR</span></div>
+              <div class="time-cell"><b>37</b><span>MIN</span></div>
+              <div class="time-cell"><b>08</b><span>SEC</span></div>
+            </div>
+
+            <a class="primary-btn wide-btn" href="coupon.html">쿠폰 등록하고 진단 신청</a>
+          </aside>
+        </div>
+      </section>
+
+      <section class="category-section" aria-label="학습 카테고리">
+        <div class="section-head">
+          <h2>레벨별 IELTS 학습 카테고리</h2>
+          <p>오늘 할 일부터 상급 훈련까지 바로 들어갈 수 있게 나눴습니다.</p>
+        </div>
+        <div class="category-grid">
+          <a class="category-card" href="today-mission.html">
+            <div class="category-icon">✓</div>
+            <strong>오늘 미션</strong>
+            <span>하루 단위로 끝내는 Speaking, Writing 미션</span>
+          </a>
+          <a class="category-card" href="beginner.html">
+            <div class="category-icon">1</div>
+            <strong>개초급</strong>
+            <span>영어 문장 만들기부터 IELTS 답변 틀까지</span>
+          </a>
+          <a class="category-card" href="intermediate.html">
+            <div class="category-icon">2</div>
+            <strong>중급</strong>
+            <span>밴드 6.0 이상을 위한 논리와 표현 확장</span>
+          </a>
+          <a class="category-card" href="advanced-2xl.html">
+            <div class="category-icon">XL</div>
+            <strong>2XL상급</strong>
+            <span>고득점 답변 구조와 첨삭 중심 집중 훈련</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="below" aria-label="수업 혜택">
+        <div class="benefits">
+          <article class="benefit">
+            <div class="benefit-icon">S</div>
+            <h2>Speaking 실전 교정</h2>
+            <p>파트별 답변 구조, 발음, 유창성을 실제 시험 흐름에 맞춰 교정합니다.</p>
+          </article>
+          <article class="benefit">
+            <div class="benefit-icon">W</div>
+            <h2>Writing 첨삭 루틴</h2>
+            <p>Task 1, Task 2 문장 전개와 채점 기준별 약점을 빠르게 확인합니다.</p>
+          </article>
+          <article class="benefit">
+            <div class="benefit-icon">P</div>
+            <h2>목표 밴드 플랜</h2>
+            <p>현재 점수와 시험 날짜에 맞춰 주차별 학습량과 수업 빈도를 정합니다.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <div class="sticky-cta">
+      <a class="primary-btn" href="coupon.html">77% 쿠폰 받기</a>
+    </div>
+  </body>
+</html>
