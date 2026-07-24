@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1 개초급 일별 학습 | IELTS 11</title>
-    <link rel="stylesheet" href="pages.css?v=webtoon-1" />
+    <link rel="stylesheet" href="pages.css?v=webtoon-2" />
     <script src="theme.js?v=theme-2"></script>
   </head>
   <body class="beginner-space-theme">
@@ -31,7 +31,7 @@
         <a
           class="webtoon-image-link"
           id="webtoonImageLink"
-          href="assets/tutorial-day-01-webtoon.png"
+          href="#"
           target="_blank"
           rel="noopener"
           hidden
@@ -248,13 +248,26 @@
 
         document.title = "DAY " + dayNumber + " " + item.title + " | IELTS 11";
         document.getElementById("webtoonDay").textContent = "DAY " + dayNumber + " WEBTOON";
-        if (dayNumber === 1) {
+        const webtoons = {
+          1: {
+            path: "assets/tutorial-day-01-webtoon.png",
+            alt: "튜토리얼 DAY 1 알파벳 A 발음 학습 웹툰",
+          },
+          2: {
+            path: "assets/tutorial-day-02-webtoon.png",
+            alt: "튜토리얼 DAY 2 알파벳 B 발음 학습 웹툰",
+          },
+        };
+        const webtoon = webtoons[dayNumber];
+
+        if (webtoon) {
           const webtoonImageLink = document.getElementById("webtoonImageLink");
           const webtoonImage = document.getElementById("webtoonImage");
           const webtoonPlaceholder = document.getElementById("webtoonPlaceholder");
 
-          webtoonImage.src = "assets/tutorial-day-01-webtoon.png?v=1";
-          webtoonImage.alt = "튜토리얼 DAY 1 알파벳 A 발음 학습 웹툰";
+          webtoonImage.src = webtoon.path + "?v=1";
+          webtoonImage.alt = webtoon.alt;
+          webtoonImageLink.href = webtoon.path;
           webtoonImageLink.hidden = false;
           webtoonPlaceholder.hidden = true;
         }

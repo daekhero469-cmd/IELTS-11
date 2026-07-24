@@ -1606,6 +1606,10 @@ html[data-theme="light"] .beginner-space-theme .phonics-example-grid strong {
     url("assets/beginner-galaxy.png") center / cover;
 }
 
+.webtoon-placeholder[hidden] {
+  display: none;
+}
+
 .webtoon-placeholder span {
   color: #65dff5;
   font-size: 13px;
