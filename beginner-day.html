@@ -112,7 +112,7 @@
           <div>
             <strong id="listeningSentence"></strong>
             <p class="korean-pronunciation" id="listeningPronunciation"></p>
-            <p id="listeningMeaning"></p>
+            <p class="complete-translation" id="listeningMeaning"></p>
           </div>
         </div>
         <audio class="lesson-audio-player" id="listeningAudio" controls playsinline preload="metadata">
@@ -131,6 +131,7 @@
           <span>SHORT NOTICE</span>
           <p id="readingPassage"></p>
           <p class="korean-pronunciation" id="readingPronunciation"></p>
+          <p class="complete-translation" id="readingMeaning"></p>
         </div>
         <details class="answer-details">
           <summary>핵심 내용 확인</summary>
@@ -164,11 +165,13 @@
         <div class="question-with-pronunciation">
           <p class="practice-question" id="speakingQuestion"></p>
           <p class="korean-pronunciation" id="speakingQuestionPronunciation"></p>
+          <p class="complete-translation" id="speakingQuestionMeaning"></p>
         </div>
         <div class="sample-answer">
           <span>초보자 답변 예시</span>
           <p id="speakingAnswer"></p>
           <p class="korean-pronunciation" id="speakingAnswerPronunciation"></p>
+          <p class="complete-translation" id="speakingAnswerMeaning"></p>
         </div>
         <p class="lesson-rule">직접 답하기 → 이유 말하기 → 짧은 예시 붙이기 순서로 세 번 말합니다.</p>
       </section>
@@ -181,12 +184,14 @@
         <div class="question-with-pronunciation">
           <p class="practice-question" id="interviewQuestion"></p>
           <p class="korean-pronunciation" id="interviewQuestionPronunciation"></p>
+          <p class="complete-translation" id="interviewQuestionMeaning"></p>
         </div>
         <button class="lesson-action-btn secondary" type="button" id="toggleInterview">답변 예시 보기</button>
         <div class="sample-answer interview-answer" id="interviewAnswerBox" hidden>
           <span>면접 답변 예시</span>
           <p id="interviewAnswer"></p>
           <p class="korean-pronunciation" id="interviewAnswerPronunciation"></p>
+          <p class="complete-translation" id="interviewAnswerMeaning"></p>
         </div>
       </section>
 
@@ -207,6 +212,7 @@
 
     <script src="beginner-1-course.js?v=phonics-1"></script>
     <script src="beginner-1-pronunciation.js?v=beginner-split-1"></script>
+    <script src="beginner-1-translations.js?v=translations-1"></script>
     <script>
       (function () {
         const params = new URLSearchParams(window.location.search);
@@ -216,6 +222,8 @@
         const item = days[dayNumber - 1];
         const pronunciationDays = window.IELTS11_BEGINNER_PRONUNCIATIONS || [];
         const pronunciation = pronunciationDays[dayNumber - 1];
+        const translationDays = window.IELTS11_BEGINNER_TRANSLATIONS || [];
+        const translation = translationDays[dayNumber - 1];
         if (!item) return;
 
         const taskNames = ["review", "vocabulary", "phonics", "listening", "reading", "writing", "speaking", "interview"];
@@ -289,6 +297,10 @@
             path: "assets/tutorial-day-10-webtoon.png",
             alt: "튜토리얼 DAY 10 알파벳 L, M, N 발음 학습 웹툰",
           },
+          11: {
+            path: "assets/tutorial-day-11-webtoon.png",
+            alt: "튜토리얼 DAY 11 알파벳 T와 D 발음 학습 웹툰",
+          },
         };
         const webtoon = webtoons[dayNumber];
 
@@ -308,7 +320,7 @@
         document.getElementById("dayGoal").textContent = item.goal;
         document.getElementById("examFocus").textContent = item.examFocus;
         document.getElementById("listeningSentence").textContent = item.listening.en;
-        document.getElementById("listeningMeaning").textContent = item.listening.ko;
+        document.getElementById("listeningMeaning").textContent = "뜻: " + item.listening.ko;
         document.getElementById("sentencePattern").textContent = item.pattern;
         document.getElementById("vocabularyTitle").textContent =
           "오늘의 단어 " + item.vocabulary.length + "개";
@@ -320,8 +332,21 @@
         document.getElementById("interviewAnswer").textContent = item.interview.answer;
         document.getElementById("readingPassage").textContent =
           item.listening.en + " " + item.speaking.answer;
+        document.getElementById("readingMeaning").textContent =
+          "뜻: " + item.listening.ko + " " + (translation ? translation.speakingAnswer : "");
         document.getElementById("readingAnswer").textContent =
           item.listening.ko + " 핵심 행동이나 정보를 영어 한 단어로 표시해 보세요.";
+
+        if (translation) {
+          document.getElementById("speakingQuestionMeaning").textContent =
+            "뜻: " + translation.speakingQuestion;
+          document.getElementById("speakingAnswerMeaning").textContent =
+            "뜻: " + translation.speakingAnswer;
+          document.getElementById("interviewQuestionMeaning").textContent =
+            "뜻: " + translation.interviewQuestion;
+          document.getElementById("interviewAnswerMeaning").textContent =
+            "뜻: " + translation.interviewAnswer;
+        }
 
         if (pronunciation) {
           document.getElementById("listeningPronunciation").textContent = pronunciation.listening;
