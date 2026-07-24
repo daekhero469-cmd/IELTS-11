@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1 개초급 일별 학습 | IELTS 11</title>
-    <link rel="stylesheet" href="pages.css?v=phonics-1" />
+    <link rel="stylesheet" href="pages.css?v=webtoon-1" />
     <script src="theme.js?v=theme-2"></script>
   </head>
   <body class="beginner-space-theme">
@@ -28,7 +28,17 @@
           <span id="webtoonDay">DAY 1 WEBTOON</span>
           <strong id="webtoonTitle">오늘의 영어 웹툰</strong>
         </div>
-        <div class="webtoon-placeholder">
+        <a
+          class="webtoon-image-link"
+          id="webtoonImageLink"
+          href="assets/tutorial-day-01-webtoon.png"
+          target="_blank"
+          rel="noopener"
+          hidden
+        >
+          <img class="webtoon-image" id="webtoonImage" alt="" />
+        </a>
+        <div class="webtoon-placeholder" id="webtoonPlaceholder">
           <span>WEBTOON</span>
           <b>준비 중</b>
         </div>
@@ -238,6 +248,16 @@
 
         document.title = "DAY " + dayNumber + " " + item.title + " | IELTS 11";
         document.getElementById("webtoonDay").textContent = "DAY " + dayNumber + " WEBTOON";
+        if (dayNumber === 1) {
+          const webtoonImageLink = document.getElementById("webtoonImageLink");
+          const webtoonImage = document.getElementById("webtoonImage");
+          const webtoonPlaceholder = document.getElementById("webtoonPlaceholder");
+
+          webtoonImage.src = "assets/tutorial-day-01-webtoon.png?v=1";
+          webtoonImage.alt = "튜토리얼 DAY 1 알파벳 A 발음 학습 웹툰";
+          webtoonImageLink.hidden = false;
+          webtoonPlaceholder.hidden = true;
+        }
         document.getElementById("phaseLabel").textContent = item.phase.name + " · DAY " + dayNumber;
         document.getElementById("dayTitle").textContent = item.title;
         document.getElementById("dayGoal").textContent = item.goal;

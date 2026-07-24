@@ -1578,6 +1578,24 @@ html[data-theme="light"] .beginner-space-theme .phonics-example-grid strong {
   font-size: 17px;
 }
 
+.webtoon-image-link {
+  display: block;
+  width: 100%;
+  background: #ffffff;
+  cursor: zoom-in;
+}
+
+.webtoon-image-link[hidden] {
+  display: none;
+}
+
+.webtoon-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
 .webtoon-placeholder {
   display: grid;
   min-height: 360px;
